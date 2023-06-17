@@ -1,7 +1,7 @@
 import '../index.css';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { api } from '../utils/api';
 import Header from "./Header";
 import Footer from "./Fotter";
@@ -9,7 +9,11 @@ import Main from "./Main";
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import InfoTooltip from './InfoTooltip';
 import ImagePopup from './ImagePopup';
+import Register from './Register.js';
+import Login from './Login';
+import ProtectedRoute from './ProtectedRoute.js'
 
 
 function App() {
@@ -29,6 +33,8 @@ function App() {
     isOpen: false,
     item: {},
   });
+
+  const [loggedIn, setLoggedIn] = useState(false);
 
 
   //запрос данных о пользователе с серва
@@ -133,56 +139,57 @@ function App() {
         <Header />
         <Routes>
 
-          {/* <Route path='/' element={main} /> */}
+          <Route path='/' element={<ProtectedRoute loggedIn={loggedIn} element={
+          <Main
+              onEditProfile={handleEditProfileClick}
+              onEditAvatar={handleEditAvatarClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardDelete={handleCardDelete}
+              onCardClick={setSelectedCard}
+              onCardLike={handleCardLike}
+              onClose={closeAllPopups}
+              cards={cards}
+            />}
+            />}/>
 
-          {/* <Route path='/'  element={<Register/>} /> */}
+          <Route path='/sign-up' element={<Register />} />
 
-          {/* <Route path='/' element={<Login/>} /> */}
+          <Route path='/sign-in' element={<Login />} />
 
         </Routes>
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onEditAvatar={handleEditAvatarClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardDelete={handleCardDelete}
-            onCardClick={setSelectedCard}
-            onCardLike={handleCardLike}
-            onClose={closeAllPopups}
-            cards={cards}
-          >
-          </Main>
-          <Footer />
 
-          {/* //Попап Аватара */}
+        <Footer />
 
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onUpdateAvatar={handleUpdateAvatar}
-            onClose={closeAllPopups}
-          />
+        {/* //Попап Аватара */}
 
-          {/* //Попап Профиля */}
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onUpdateAvatar={handleUpdateAvatar}
+          onClose={closeAllPopups}
+        />
 
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onUpdateUser={handleUpdateUser}
-            onClose={closeAllPopups}
-          />
+        {/* //Попап Профиля */}
 
-          {/* //Попап Карточки */}
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onUpdateUser={handleUpdateUser}
+          onClose={closeAllPopups}
+        />
 
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onAddPlace={handleAddPlaceSubmit}
-            onClose={closeAllPopups}
-          />
+        {/* //Попап Карточки */}
 
-          {/* //Попап Картинки */}
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onAddPlace={handleAddPlaceSubmit}
+          onClose={closeAllPopups}
+        />
 
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopups}
-          />
+        {/* //Попап Картинки */}
+
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopups}
+        />
 
 
       </CurrentUserContext.Provider>
