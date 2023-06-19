@@ -13,7 +13,7 @@ import InfoTooltip from './InfoTooltip';
 import ImagePopup from './ImagePopup';
 import Register from './Register.js';
 import Login from './Login';
-import ProtectedRoute from './ProtectedRoute.js'
+import ProtectedRouteElement from './ProtectedRoute'
 
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
     item: {},
   });
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
 
   //запрос данных о пользователе с серва
@@ -139,8 +139,7 @@ function App() {
         <Header />
         <Routes>
 
-          <Route path='/' element={<ProtectedRoute loggedIn={loggedIn} element={
-          <Main
+        <Route path="/" element={<ProtectedRouteElement element={Main}
               onEditProfile={handleEditProfileClick}
               onEditAvatar={handleEditAvatarClick}
               onAddPlace={handleAddPlaceClick}
@@ -149,12 +148,11 @@ function App() {
               onCardLike={handleCardLike}
               onClose={closeAllPopups}
               cards={cards}
-            />}
-            />}/>
-
-          <Route path='/sign-up' element={<Register />} />
+              loggedIn={loggedIn} /> } />
 
           <Route path='/sign-in' element={<Login />} />
+
+          <Route path='/sign-up' element={<Register />} />
 
         </Routes>
 
@@ -190,7 +188,6 @@ function App() {
           card={selectedCard}
           onClose={closeAllPopups}
         />
-
 
       </CurrentUserContext.Provider>
     </>

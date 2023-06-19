@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import {Link} from 'react-router-dom';
 function Register(props) {
 
     const [email, setEmail] = useState('')
@@ -40,7 +41,7 @@ function Register(props) {
                     <span className="popup__input-error" />
                 </form>
                 <button className="auth__btn" type="submit">Зарегистрироваться</button>
-                <p className="auth__subtitle">Уже зарегистрированы? Войти</p>
+                <p className="auth__subtitle">Уже зарегистрированы? <Link to="/sign-in" className="auth__login-link">Войти</Link></p>
             </div>
         </div>
     )
