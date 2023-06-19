@@ -1,6 +1,14 @@
 import React from "react";
-function Register() {
+import { useState } from "react";
+function Register(props) {
 
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        props.onRegistUser({email, password});
+    }
 
     return (
         <div className="auth">
@@ -8,18 +16,28 @@ function Register() {
 
                 <h1 className="auth__title">Регистрация</h1>
 
-                <form className="auth__form">
+                <form className="auth__form" onSubmit={handleSubmit}>
                     <input
-                     type="email"
-                     placeholder="Email"
-                     className="auth__input"
-                     required/>
+                        type="email"
+                        placeholder="Email"
+                        className="auth__input"
+                        name='email'
+                        required
+                        value={email}
+                        onChange={event => setEmail(event.target.value)} />
 
-                    <span className="popup__input-error"/>
+                    <span className="popup__input-error" />
 
-                    <input type="password" placeholder="Пароль" className="auth__input"/>
+                    <input
+                        type="password"
+                        placeholder="Пароль"
+                        className="auth__input"
+                        name="password"
+                        required
+                        value={password}
+                        onChange={event => setPassword(event.target.value)} />
 
-                    <span className="popup__input-error"/>
+                    <span className="popup__input-error" />
                 </form>
                 <button className="auth__btn" type="submit">Зарегистрироваться</button>
                 <p className="auth__subtitle">Уже зарегистрированы? Войти</p>
