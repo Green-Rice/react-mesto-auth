@@ -1,11 +1,13 @@
 import '../index.css';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { Route, Routes } from 'react-router-dom';
+import { registrationUser, loginUser, getToken } from '../utils/auth';
 import { useEffect, useState } from 'react';
 import { api } from '../utils/api';
 import Header from "./Header";
 import Footer from "./Fotter";
 import Main from "./Main";
+import ProtectedRouteElement from './ProtectedRoute'
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
@@ -13,29 +15,36 @@ import InfoTooltip from './InfoTooltip';
 import ImagePopup from './ImagePopup';
 import Register from './Register.js';
 import Login from './Login';
-import ProtectedRouteElement from './ProtectedRoute'
 
 
 function App() {
   // Нач стейт юзера
   const [currentUser, setCurrentUser] = useState({});
 
-  const [cards, setCards] = useState([])
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const [cards, setCards] = useState([]);
+  const navigate = useNavigate();
+
   //Стейты попапов
-
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
-
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
+  const [isInfoTooltipPopupOpen, setisInfoTooltipPopupOpen] = useState(false)
+
 
   const [selectedCard, setSelectedCard] = useState({
     isOpen: false,
     item: {},
   });
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [emailUser, setEmailUser] = useState('')
+  //Залогиневшийся юзер
+  const [legalUser, setlegalUser] = useState('')
 
+  useEffect(() => {
+    tokenCheck()
+  }, [])
 
   //запрос данных о пользователе с серва
   useEffect(() => {
@@ -52,6 +61,18 @@ function App() {
     })
       .catch(err => { console.log(err) })
   }, []);
+
+  //Обработчики уведомления о регистрации или ...
+  function handlePositiveInfoTooltipOpen (){
+    setisInfoTooltipPopupOpen(true)
+    setlegalUser(true)
+  }
+
+  function handleNegativeInfoTooltipOpen (){
+    setisInfoTooltipPopupOpen(true)
+    setlegalUser(false)
+  }
+
 
   //обработчик аватара профиля
   function handleUpdateAvatar({ avatar }) {
@@ -133,30 +154,89 @@ function App() {
       .catch(err => { console.log(err) })
   }
 
+  function handleRegisterUser({ email, password }) {
+    console.log('app')
+    registrationUser({ email, password })
+      .then(res => { console.log(res) })
+      .then(() => {
+        handlePositiveInfoTooltipOpen()
+        navigate('/sign-in', { replace: true })
+      }).catch((err) => {
+        handleNegativeInfoTooltipOpen()
+        console.log(err)
+      })
+  }
+
+
+  function handleLoginUser({ email, password }) {
+    loginUser({ email, password })
+      .then(data => {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          setLoggedIn(true);
+          setEmailUser(email)
+          navigate('/', { replace: true })
+        }
+      })
+      .catch((err) => {
+        handleNegativeInfoTooltipOpen()
+        console.log(err)
+      })
+  }
+
+  function logOut(){
+    localStorage.removeItem('token')
+    setLoggedIn(false)
+    setEmailUser('')
+    navigate("/sign-in");
+  }
+
+  function tokenCheck() {
+    const token = localStorage.getItem('token')
+    if (token)
+      getToken(token)
+        .then(res => {
+          setLoggedIn(true)
+          setEmailUser(res.data.email)
+          navigate("/", { replace: true })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+  }
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
+        {/* <Header onLogOut={logOut} emailUser={emailUser}/> */}
         <Routes>
 
-        <Route path="/" element={<ProtectedRouteElement element={Main}
-              onEditProfile={handleEditProfileClick}
-              onEditAvatar={handleEditAvatarClick}
-              onAddPlace={handleAddPlaceClick}
-              onCardDelete={handleCardDelete}
-              onCardClick={setSelectedCard}
-              onCardLike={handleCardLike}
-              onClose={closeAllPopups}
-              cards={cards}
-              loggedIn={loggedIn} /> } />
+          <Route path="/" element={<ProtectedRouteElement element={Main}
+            onEditProfile={handleEditProfileClick}
+            onEditAvatar={handleEditAvatarClick}
+            onAddPlace={handleAddPlaceClick}
+            onCardDelete={handleCardDelete}
+            onCardClick={setSelectedCard}
+            onCardLike={handleCardLike}
+            onClose={closeAllPopups}
+            emailUser={emailUser}
+            loggedIn={loggedIn}
+            cards={cards}
+             />} />
 
-          <Route path='/sign-in' element={<Login />} />
+          <Route path='/sign-in' element={<Login onLoginUser={handleLoginUser} />} />
 
-          <Route path='/sign-up' element={<Register />} />
+          <Route path='/sign-up' element={<Register onRegisre={handleRegisterUser} />} />
 
         </Routes>
 
         <Footer />
+
+        <InfoTooltip
+          isOpen={isInfoTooltipPopupOpen}
+          isLegal={legalUser}
+          onClose={closeAllPopups}
+        />
 
         {/* //Попап Аватара */}
 

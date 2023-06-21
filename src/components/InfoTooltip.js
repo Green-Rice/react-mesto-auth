@@ -5,6 +5,7 @@ import fiasco from '../images/cross.png';
 
 function InfoTooltip(props) {
 
+    const isLegal = props.isLegal
 
     return (
         <div className='popup popup_type_infotooltip popup_opened'>

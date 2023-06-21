@@ -1,0 +1,6 @@
+.header__content {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+}
