@@ -16,7 +16,7 @@ function Login(props) {
     return (
         <>
             <Header>
-                {<Link to='/sign-up' className="header__out">Регистрация</Link>}
+                {<Link to='/sign-up' className="header__out" style={{color: '#fff'}}>Регистрация</Link>}
             </Header>
 
             <div className="auth">

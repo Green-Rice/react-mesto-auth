@@ -1,10 +1,9 @@
 import '../index.css';
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { registrationUser, loginUser, getToken } from '../utils/auth';
 import { useEffect, useState } from 'react';
 import { api } from '../utils/api';
-import Header from "./Header";
 import Footer from "./Fotter";
 import Main from "./Main";
 import ProtectedRouteElement from './ProtectedRoute'
@@ -27,10 +26,10 @@ function App() {
   const navigate = useNavigate();
 
   //Стейты попапов
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isInfoTooltipPopupOpen, setisInfoTooltipPopupOpen] = useState(false)
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
 
 
   const [selectedCard, setSelectedCard] = useState({

@@ -10,7 +10,6 @@ function Register(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('зарегался')
         props.onRegisre({ email, password });
     }
 
@@ -18,7 +17,7 @@ function Register(props) {
 
         <>
             <Header>
-                {<Link to='/sign-in' className="header__out">Войти</Link>}
+                {<Link to='/sign-in' className="header__out" style={{color: '#fff'}}>Войти</Link>}
             </Header>
 
             <div className="auth">

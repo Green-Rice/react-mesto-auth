@@ -16,7 +16,7 @@ function InfoTooltip(props) {
                 src={isLegal ? advance : fiasco}
                 alt={isLegal ? 'advance' : 'fiasco'}
                 />
-                <h2 className="popup__title_tooltip">{isLegal? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте еще раз.'}</h2>
+                <h2 className="popup__title_tooltip">{isLegal? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}</h2>
             </div>
         </div>
     )
