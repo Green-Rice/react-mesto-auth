@@ -11,6 +11,7 @@ const Main = ({
   onCardLike,
   onAddPlace,
   emailUser,
+  onLogOut,
   onClose,
   cards
 }) => {
@@ -20,8 +21,8 @@ const Main = ({
   return (
     <>
       <Header>
-        <h2 className="header__user">{emailUser}</h2>
-        <button className="header__out">Выйти</button>
+        {<h2 className="header__user">{emailUser}</h2>}
+        {<button type='button'className="header__out" onClick={onLogOut}>Выйти</button>}
       </Header>
 
       <main className="content">

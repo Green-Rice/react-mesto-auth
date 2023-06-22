@@ -208,7 +208,7 @@ function App() {
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        {/* <Header onLogOut={logOut} emailUser={emailUser}/> */}
+
         <Routes>
 
           <Route path="/" element={<ProtectedRouteElement element={Main}
@@ -221,6 +221,7 @@ function App() {
             onClose={closeAllPopups}
             emailUser={emailUser}
             loggedIn={loggedIn}
+            onLogOut={logOut}
             cards={cards}
              />} />
 
