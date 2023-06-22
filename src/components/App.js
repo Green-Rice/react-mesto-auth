@@ -137,6 +137,7 @@ function App() {
   }
 
   function closeAllPopups() {
+    setisInfoTooltipPopupOpen(false)
     setIsEditProfilePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
     setIsAddPlacePopupOpen(false)
