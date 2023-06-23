@@ -1,5 +1,5 @@
-import { baseUrl } from './utils'
-import { token } from './utils'
+const token = 'd241e5f6-5dd3-4846-a8da-a823500c9f8c'
+const baseUrl ='https://mesto.nomoreparties.co/v1/cohort-64'
 
 class Api {
   constructor(baseUrl, headers) {
